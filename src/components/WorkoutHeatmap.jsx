@@ -1,182 +1,232 @@
 
 import { useMemo, useState } from 'react'
-import { countByDate, todayKey } from '../utils/workouts'
+import { countByDate } from '../utils/workouts'
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
 
-function dateKey(date) {
-    const y = date.getFullYear()
-    const m = String(date.getMonth() + 1).padStart(2, '0')
-    const d = String(date.getDate()).padStart(2, '0')
-    return `${y}-${m}-${d}`
+function toDateKey(date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+
+  return `${year}-${month}-${day}`
 }
 
-function formatDate(key) {
-    const [year, month, day] = key.split('-').map(Number)
-    const weekday = new Date(year, month - 1, day).getDay()
-    return `${year}년 ${month}월 ${day}일 (${WEEKDAYS[weekday]})`
+function getLevel(count) {
+  if (count <= 0) return 0
+  return Math.min(count, 4)
 }
 
 export default function WorkoutHeatmap({ workouts = [] }) {
-    const [hovered, setHovered] = useState(null)
+  const [hovered, setHovered] = useState(null)
 
-    const counts = useMemo(() => countByDate(workouts), [workouts])
+  const counts = useMemo(
+    () => countByDate(workouts),
+    [workouts]
+  )
 
-    const { weeks, months, activeDays, totalCount } = useMemo(() => {
-        const today = new Date(`${todayKey()}T12:00:00`)
-        const start = new Date(today)
-        start.setFullYear(start.getFullYear() - 1)
-        start.setDate(start.getDate() + 1)
-        start.setDate(start.getDate() - start.getDay())
+  const { weeks, monthLabels } = useMemo(() => {
+    const year = new Date().getFullYear()
+    const start = new Date(year, 0, 1, 12)
+    const end = new Date(year, 11, 31, 12)
 
-        const end = new Date(today)
-        end.setDate(end.getDate() + 6 - end.getDay())
+    // 1월 1일이 속한 주의 일요일부터 칸을 정렬
+    const gridStart = new Date(start)
+    gridStart.setDate(
+      gridStart.getDate() - gridStart.getDay()
+    )
 
-        const columns = []
-        const labels = []
-        let previousMonth = -1
-        let active = 0
-        let total = 0
+    const result = []
+    let currentWeek = []
 
-        for (
-            let date = new Date(start);
-            date <= end;
-            date.setDate(date.getDate() + 1)
-        ) {
-            const key = dateKey(date)
-            const weekIndex = Math.floor(
-                Math.round((date - start) / 86400000) / 7
-            )
-            const dayIndex = date.getDay()
-            const future = date > today
-            const count = future ? 0 : (counts[key] || 0)
+    for (
+      const date = new Date(gridStart);
+      date <= end;
+      date.setDate(date.getDate() + 1)
+    ) {
+      const current = new Date(date)
+      const key = toDateKey(current)
 
-            if (dayIndex === 0) {
-                columns.push([])
+      // 해당 연도 밖의 날짜는 빈칸으로 처리
+      const isOutsideYear =
+        current.getFullYear() !== year
+
+      currentWeek.push(
+        isOutsideYear
+          ? null
+          : {
+              key,
+              date: current,
+              count: counts[key] || 0,
+              level: getLevel(counts[key] || 0)
             }
+      )
 
-            if (date.getMonth() !== previousMonth) {
-                // 첫 번째 부분 월은 표시하지 않아 월 이름이 겹치지 않도록 처리
-                if (weekIndex > 0) {
-                    labels.push({
-                        name: `${date.getMonth() + 1}월`,
-                        weekIndex
-                    })
-                }
-                previousMonth = date.getMonth()
-            }
+      if (currentWeek.length === 7) {
+        result.push(currentWeek)
+        currentWeek = []
+      }
+    }
 
-            columns[columns.length - 1].push({
-                key,
-                count,
-                future
-            })
+    // 마지막 주의 남은 요일 채우기
+    if (currentWeek.length > 0) {
+      while (currentWeek.length < 7) {
+        currentWeek.push(null)
+      }
 
-            if (count > 0) active++
-            total += count
-        }
+      result.push(currentWeek)
+    }
+
+    // 1월부터 12월까지 월별 시작 위치 계산
+    const labels = Array.from(
+      { length: 12 },
+      (_, month) => {
+        const firstDay = new Date(year, month, 1, 12)
+
+        const diffDays = Math.round(
+          (firstDay - gridStart) / 86400000
+        )
 
         return {
-            weeks: columns,
-            months: labels,
-            activeDays: active,
-            totalCount: total
+          month: month + 1,
+          weekIndex: Math.floor(diffDays / 7)
         }
-    }, [counts])
-
-    return (
-        <div className="github-heatmap">
-            <div className="github-heatmap-summary">
-                <div>
-                    <strong>{activeDays}일</strong>
-                    <span>최근 1년간 운동한 날</span>
-                </div>
-                <span className="github-heatmap-total">
-                    총 {totalCount}회 운동
-                </span>
-            </div>
-
-            <div className="github-heatmap-scroll">
-                <div className="github-heatmap-chart">
-                    <div className="github-heatmap-months">
-                        <span className="github-heatmap-month-spacer" />
-                        <div className="github-heatmap-month-track">
-                            {months.map((month, index) => (
-                                <span
-                                    key={`${month.name}-${index}`}
-                                    style={{
-                                        left: `${month.weekIndex / weeks.length * 100}%`
-                                    }}
-                                >
-                                    {month.name}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="github-heatmap-body">
-                        <div className="github-heatmap-weekdays">
-                            {WEEKDAYS.map((day, index) => (
-                                <span key={day}>
-                                    {[1, 3, 5].includes(index) ? day : ''}
-                                </span>
-                            ))}
-                        </div>
-
-                        <div className="github-heatmap-weeks">
-                            {weeks.map((week, weekIndex) => (
-                                <div
-                                    className="github-heatmap-week"
-                                    key={weekIndex}
-                                >
-                                    {week.map(day => (
-                                        <button
-                                            key={day.key}
-                                            type="button"
-                                            className={[
-                                                'github-heatmap-cell',
-                                                `level-${Math.min(day.count, 4)}`,
-                                                day.future ? 'is-future' : ''
-                                            ].join(' ')}
-                                            disabled={day.future}
-                                            aria-label={`${formatDate(day.key)}, 운동 ${day.count}회`}
-                                            onMouseEnter={() => setHovered(day.key)}
-                                            onMouseLeave={() => setHovered(null)}
-                                            onFocus={() => setHovered(day.key)}
-                                            onBlur={() => setHovered(null)}
-                                        >
-                                            {hovered === day.key && (
-                                                <span
-                                                    className="github-heatmap-tooltip"
-                                                    role="tooltip"
-                                                >
-                                                    <strong>
-                                                        {day.count
-                                                            ? `운동 ${day.count}회`
-                                                            : '운동 기록 없음'}
-                                                    </strong>
-                                                    <span>{formatDate(day.key)}</span>
-                                                </span>
-                                            )}
-                                        </button>
-                                    ))}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="github-heatmap-legend">
-                <span>적게</span>
-                {[0, 1, 2, 3, 4].map(level => (
-                    <i
-                        key={level}
-                        className={`github-heatmap-cell level-${level}`}
-                    />
-                ))}
-                <span>많이</span>
-            </div>
-        </div>
+      }
     )
+
+    return {
+      weeks: result,
+      monthLabels: labels
+    }
+  }, [counts])
+
+  function tooltipText(cell) {
+    const date = cell.date
+
+    return {
+      date: `${date.getFullYear()}년 ${
+        date.getMonth() + 1
+      }월 ${date.getDate()}일 (${
+        WEEKDAYS[date.getDay()]
+      })`,
+      count: `운동 ${cell.count}회`
+    }
+  }
+
+  return (
+    <div className="heatmap-wrapper">
+      <div className="flame-heatmap-scroll">
+        <div
+          className="flame-heatmap-content"
+          style={{
+            '--heatmap-weeks': weeks.length
+          }}
+        >
+          <div className="flame-heatmap-months">
+            {monthLabels.map(label => (
+              <span
+                key={label.month}
+                className="flame-heatmap-month"
+                style={{
+                  gridColumn: label.weekIndex + 1
+                }}
+              >
+                {label.month}월
+              </span>
+            ))}
+          </div>
+
+          <div className="flame-heatmap-body">
+            <div className="flame-heatmap-weekdays">
+              <span />
+              <span>월</span>
+              <span />
+              <span>수</span>
+              <span />
+              <span>금</span>
+              <span />
+            </div>
+
+            <div className="flame-heatmap-grid">
+              {weeks.map((week, weekIndex) => (
+                <div
+                  className="flame-heatmap-week"
+                  key={weekIndex}
+                >
+                  {week.map((cell, dayIndex) => {
+                    if (!cell) {
+                      return (
+                        <div
+                          key={`empty-${dayIndex}`}
+                          className="flame-heatmap-empty"
+                        />
+                      )
+                    }
+
+                    const isHovered =
+                      hovered === cell.key
+
+                    const tooltip = tooltipText(cell)
+
+                    return (
+                      <div
+                        key={cell.key}
+                        className={
+                          `flame-heatmap-cell level-${cell.level}`
+                        }
+                        tabIndex={0}
+                        role="img"
+                        aria-label={
+                          `${tooltip.date}, ${tooltip.count}`
+                        }
+                        onMouseEnter={() =>
+                          setHovered(cell.key)
+                        }
+                        onMouseLeave={() =>
+                          setHovered(null)
+                        }
+                        onFocus={() =>
+                          setHovered(cell.key)
+                        }
+                        onBlur={() =>
+                          setHovered(null)
+                        }
+                      >
+                        {isHovered && (
+                          <div className="flame-heatmap-tooltip">
+                            <strong>
+                              {tooltip.date}
+                            </strong>
+
+                            <span>
+                              {tooltip.count}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flame-heatmap-legend">
+        <span>적게</span>
+
+        {[0, 1, 2, 3, 4].map(level => (
+          <i
+            key={level}
+            className={
+              `flame-heatmap-cell level-${level}`
+            }
+          />
+        ))}
+
+        <span>많이</span>
+      </div>
+    </div>
+  )
 }

@@ -1,163 +1,222 @@
+
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { fetchWorkoutById, deleteWorkout } from '../api/workoutApi'
-import { clearToken, getNickname } from '../auth/token'
+import { clearToken } from '../auth/token'
+import '../styles/workout-form.css'
 
-const RUNNING_ICON = '🏃'
-const BOXING_ICON = '🥊'
+const TRAINING_LABELS = {
+  SHADOW: '섀도우',
+  MITT: '미트',
+  SPARRING: '스파링'
+}
 
-function formatDateTime(dateTimeStr) {
-    const date = new Date(dateTimeStr)
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    const hours = String(date.getHours()).padStart(2, '0')
-    const minutes = String(date.getMinutes()).padStart(2, '0')
-    return `${year}.${month}.${day} ${hours}:${minutes}`
+function formatDateTime(value) {
+  if (!value) return '-'
+  const [date, time = ''] = value.split('T')
+  return `${date.replaceAll('-', '.')} ${time.slice(0, 5)}`
 }
 
 export default function WorkoutDetailPage() {
-    const { id } = useParams()
-    const navigate = useNavigate()
-    const nickname = getNickname()
-    const [workout, setWorkout] = useState(null)
-    const [error, setError] = useState(null)
+  const { id } = useParams()
+  const navigate = useNavigate()
 
-    useEffect(() => {
-        fetchWorkoutById(id)
-            .then(data => setWorkout(data))
-            .catch(err => {
-                console.error('상세 조회 실패:', err)
-                if (err.status === 401) {
-                    clearToken()
-                    navigate('/login', { replace: true })
-                    return
-                }
-                setError('상세 정보를 불러오지 못했습니다.')
-            })
-    }, [id, navigate])
+  const [workout, setWorkout] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-    function handleLogout() {
+  useEffect(() => {
+    let active = true
+
+    fetchWorkoutById(id)
+      .then(data => {
+        if (active) setWorkout(data)
+      })
+      .catch(e => {
+        if (!active) return
+
+        if (e.status === 401) {
+          clearToken()
+          navigate('/login', { replace: true })
+        } else {
+          setError('운동 상세 정보를 불러오지 못했습니다.')
+        }
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+
+    return () => { active = false }
+  }, [id, navigate])
+
+  async function handleDelete() {
+    if (!window.confirm('이 운동 기록을 삭제하시겠습니까?')) return
+
+    try {
+      const response = await deleteWorkout(id)
+
+      if (response.status === 401) {
         clearToken()
         navigate('/login', { replace: true })
+        return
+      }
+
+      if (!response.ok) {
+        throw new Error('운동 기록 삭제에 실패했습니다.')
+      }
+
+      navigate('/calendar')
+    } catch (e) {
+      setError(e.message || '삭제에 실패했습니다.')
     }
+  }
 
-    function handleDelete() {
-        if (!confirm('이 운동 기록을 삭제하시겠습니까?')) return
+  if (loading) {
+    return <div className="detail-page">운동 기록 불러오는 중...</div>
+  }
 
-        deleteWorkout(id)
-            .then(res => {
-                if (res.status === 401) {
-                    clearToken()
-                    navigate('/login', { replace: true })
-                    return
-                }
-                if (!res.ok) throw new Error('삭제 실패')
-                navigate('/workouts')
-            })
-            .catch(err => {
-                console.error('삭제 실패:', err)
-                alert('삭제에 실패했습니다.')
-            })
-    }
-
-    if (error) {
-        return (
-            <div className="detail-page">
-                <div className="detail-card">
-                    <p>{error}</p>
-                    <div className="detail-actions">
-                        <Link to="/workouts" className="sub-btn">목록으로</Link>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
-    if (!workout) {
-        return null
-    }
-
-    const typeLabel = workout.type === 'RUNNING' ? '러닝' : '복싱'
-    const typeIcon = workout.type === 'RUNNING' ? RUNNING_ICON : BOXING_ICON
-    const iconClass = workout.type === 'RUNNING' ? 'running' : 'boxing'
-
+  if (error || !workout) {
     return (
-        <>
-            <header className="header">
-                <div className="logo">NO RUN NO LIFE</div>
-                <nav className="nav">
-                    <Link to="/">홈</Link>
-                    <Link to="/workouts/new">운동 기록하기</Link>
-                    <Link to="/stats">통계</Link>
-                    {nickname && <span className="nav-nickname">{nickname}님</span>}
-                    <button type="button" className="nav-logout-btn" onClick={handleLogout}>로그아웃</button>
-                </nav>
-            </header>
-
-            <div className="detail-page">
-                <div className="detail-card">
-                    <div className="modal-header" style={{ padding: 0, marginBottom: 20, border: 'none' }}>
-                        <div className="type-box">
-                            <span className={`icon ${iconClass}`}>{typeIcon}</span>
-                            {typeLabel}
-                        </div>
-                    </div>
-
-                    <div className="modal-summary">
-                        <span>{workout.durationMinutes}분</span>
-                        <span>{formatDateTime(workout.workoutDateTime)}</span>
-                    </div>
-
-                    {workout.memo && <div className="modal-memo">{workout.memo}</div>}
-
-                    {workout.type === 'RUNNING' && (
-                        <div className="field-group">
-                            <div className="detail-section-title">러닝 정보</div>
-                            <div className="detail-item">
-                                {workout.distanceKm != null && <div>거리: {workout.distanceKm}km</div>}
-                                {workout.place && <div>장소: {workout.place}</div>}
-                                {workout.caloriesBurned != null && <div>소모 칼로리: {workout.caloriesBurned}kcal</div>}
-                            </div>
-                        </div>
-                    )}
-
-                    {workout.type === 'BOXING' && (
-                        <div className="field-group">
-                            <div className="detail-section-title">복싱 정보</div>
-                            <div className="detail-item">
-                                {workout.rounds != null && <div>라운드: {workout.rounds}</div>}
-                                {workout.sparringPartner && <div>스파링 파트너: {workout.sparringPartner}</div>}
-                                {workout.techniqueType && <div>훈련 타입: {workout.techniqueType}</div>}
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="detail-section-title">세부 기록</div>
-                    <div className="detail-list">
-                        {workout.details && workout.details.length > 0 ? (
-                            workout.details.map(d => (
-                                <div className="detail-item" key={d.id ?? d.sequence}>
-                                    <div className="detail-item-header">
-                                        <span className="detail-label">{d.label || `기록 ${d.sequence}`}</span>
-                                        {d.durationSeconds && <span className="detail-seconds">{d.durationSeconds}초</span>}
-                                    </div>
-                                    {d.note && <div className="detail-note">{d.note}</div>}
-                                </div>
-                            ))
-                        ) : (
-                            <div className="detail-empty">등록된 세부 기록이 없습니다.</div>
-                        )}
-                    </div>
-
-                    <div className="detail-actions">
-                        <Link to={`/workouts/${workout.id}/condition`} className="main-btn">운동 후 컨디션 입력</Link>
-                        <Link to={`/workouts/${workout.id}/edit`} className="sub-btn">수정</Link>
-                        <button className="danger-btn" onClick={handleDelete}>삭제</button>
-                        <Link to="/workouts" className="sub-btn">목록으로</Link>
-                    </div>
-                </div>
-            </div>
-        </>
+      <div className="detail-page">
+        <div className="detail-card">
+          <p>{error || '운동 기록을 찾을 수 없습니다.'}</p>
+          <Link to="/calendar" className="sub-btn">운동 관리로</Link>
+        </div>
+      </div>
     )
+  }
+
+  const isRunning = workout.type === 'RUNNING'
+
+  return (
+    <div className="detail-page">
+      <div className="detail-card">
+        <div className="modal-header" style={{
+          padding: 0,
+          marginBottom: 20,
+          border: 'none'
+        }}>
+          <div className="type-box">
+            <span className={`icon ${isRunning ? 'running' : 'boxing'}`}>
+              {isRunning ? '🏃' : '🥊'}
+            </span>
+            {isRunning ? '러닝' : '복싱'}
+          </div>
+        </div>
+
+        <div className="modal-summary">
+          <span>{workout.durationMinutes}분</span>
+          <span>{formatDateTime(workout.workoutDateTime)}</span>
+        </div>
+
+        {workout.memo && (
+          <div className="modal-memo">{workout.memo}</div>
+        )}
+
+        {isRunning ? (
+          <div className="field-group">
+            <div className="detail-section-title">러닝 정보</div>
+            <div className="detail-item">
+              {workout.distanceKm != null && (
+                <div>거리: {workout.distanceKm}km</div>
+              )}
+              {workout.place && <div>장소: {workout.place}</div>}
+              {workout.caloriesBurned != null && (
+                <div>소모 칼로리: {workout.caloriesBurned}kcal</div>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="field-group">
+            <div className="detail-section-title">복싱 정보</div>
+            <div className="detail-item">
+              {workout.rounds != null && (
+                <div>라운드: {workout.rounds}</div>
+              )}
+              {workout.sparringPartner && (
+                <div>스파링 파트너: {workout.sparringPartner}</div>
+              )}
+              {workout.techniqueType && (
+                <div>
+                  훈련 타입: {
+                    TRAINING_LABELS[workout.techniqueType] ??
+                    workout.techniqueType
+                  }
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        <div className="detail-section-title">세부 기록</div>
+
+        <div className="detail-list">
+          {workout.details?.length > 0 ? (
+            workout.details.map((detail, index) => (
+              <div
+                className="detail-item"
+                key={detail.id ?? detail.sequence ?? index}
+              >
+                <div className="detail-item-header">
+                  <span className="detail-label">
+                    {detail.label || `기록 ${index + 1}`}
+                  </span>
+                  {detail.durationSeconds != null && (
+                    <span className="detail-seconds">
+                      {detail.durationSeconds}초
+                    </span>
+                  )}
+                </div>
+
+                {detail.note && (
+                  <div className="detail-note">{detail.note}</div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="detail-empty">
+              등록된 세부 기록이 없습니다.
+            </div>
+          )}
+        </div>
+
+        <div className="nrnl-condition-update-hint">
+          <strong>운동 이후 몸 상태가 달라졌나요?</strong>
+          <p>
+            운동 다음 날 통증이 더 심해지거나 피로가 남아 있다면
+            컨디션을 업데이트해주세요.
+            변경된 정보는 AI 코칭에 반영됩니다.
+          </p>
+        </div>
+
+        <div className="detail-actions">
+          <Link
+            to={`/workouts/${workout.id}/condition`}
+            className="main-btn"
+          >
+            컨디션 업데이트
+          </Link>
+
+          <Link
+            to={`/workouts/${workout.id}/edit`}
+            className="sub-btn"
+          >
+            수정
+          </Link>
+
+          <button
+            type="button"
+            className="danger-btn"
+            onClick={handleDelete}
+          >
+            삭제
+          </button>
+
+          <Link to="/calendar" className="sub-btn">
+            목록으로
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
 }

@@ -1,0 +1,583 @@
+
+/* =========================================
+   회원가입 페이지
+========================================= */
+
+#root > .nrnl-signup-page.nrnl-auth-theme > .page {
+    padding-top: 145px;
+    padding-bottom: 55px;
+}
+
+.nrnl-signup-page.nrnl-auth-theme .form-card.form-card--single {
+    max-width: 650px;
+}
+
+/* 회원가입 제목 */
+.nrnl-signup-page .form-left > h1,
+.nrnl-signup-page .form-left > .description {
+    text-align: center;
+}
+
+/* 계정 정보 입력칸 */
+.nrnl-signup-page .signup-account-fields {
+    width: 100%;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nrnl-signup-page .signup-account-fields .field-group,
+.nrnl-signup-page .signup-account-fields .nrnl-input-wrap {
+    width: 100%;
+}
+
+.nrnl-signup-page .signup-account-fields .form-control {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.nrnl-signup-page .signup-account-fields .field-group {
+    text-align: left;
+}
+
+/* 섹션 제목 */
+.nrnl-signup-page .signup-section-title {
+    color: #ffb08a;
+    font-size: 17px;
+    font-weight: 800;
+    margin: 8px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 130, 80, .3);
+}
+
+.nrnl-signup-page form > .signup-section-title:first-child {
+    text-align: center;
+}
+
+.nrnl-signup-page .signup-section-title:not(:first-child) {
+    margin-top: 32px;
+}
+
+/* 성별, 나이, 키, 몸무게 */
+.nrnl-signup-page .signup-two-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 16px;
+}
+
+.nrnl-signup-page.nrnl-auth-theme .signup-control {
+    padding-left: 16px;
+}
+
+.nrnl-signup-page.nrnl-auth-theme select.signup-control {
+    color: #fff8f3;
+    color-scheme: dark;
+}
+
+/* 숫자 입력 화살표 제거 */
+.nrnl-signup-page input[type="number"]::-webkit-inner-spin-button,
+.nrnl-signup-page input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.nrnl-signup-page input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* 회원가입 선택 카드 */
+.nrnl-signup-page .signup-card-fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0 0 24px;
+    min-width: 0;
+}
+
+.nrnl-signup-page .signup-card-fieldset legend {
+    margin-bottom: 12px;
+}
+
+.nrnl-signup-page .signup-select-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+    border: 1px solid rgba(243, 186, 160, .35);
+    border-radius: 13px;
+    background: rgba(24, 9, 8, .72);
+    color: #fff4ed;
+    cursor: pointer;
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease;
+}
+
+.nrnl-signup-page .signup-select-card:hover {
+    border-color: rgba(255, 120, 62, .85);
+    background: rgba(255, 90, 32, .12);
+    transform: translateY(-2px);
+}
+
+.nrnl-signup-page .signup-select-card.is-selected {
+    border-color: #ff783e;
+    background: rgba(255, 90, 32, .18);
+    box-shadow: 0 0 0 1px rgba(255, 120, 62, .35);
+}
+
+.nrnl-signup-page .signup-select-card input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.nrnl-signup-page .signup-select-card:focus-within {
+    outline: 2px solid #ff995e;
+    outline-offset: 3px;
+}
+
+/* 회원가입 운동 경력 카드 */
+.nrnl-signup-page .signup-experience-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.nrnl-signup-page .signup-experience-card {
+    min-height: 125px;
+    padding: 16px 10px;
+    text-align: center;
+}
+
+.nrnl-signup-page .signup-experience-card strong {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.nrnl-signup-page .signup-experience-card small {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #d2aaa0;
+    word-break: keep-all;
+}
+
+.nrnl-signup-page .signup-card-indicator {
+    width: 17px;
+    height: 17px;
+    border: 2px solid #cba79b;
+    border-radius: 50%;
+    position: relative;
+}
+
+.nrnl-signup-page .is-selected .signup-card-indicator {
+    border-color: #ff783e;
+}
+
+.nrnl-signup-page .is-selected .signup-card-indicator::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    background: #ff783e;
+    border-radius: 50%;
+}
+
+/* 회원가입 운동 종목 카드 */
+.nrnl-signup-page .signup-workout-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.nrnl-signup-page .signup-workout-card {
+    min-height: 125px;
+    padding: 18px;
+}
+
+.nrnl-signup-page .signup-workout-icon {
+    font-size: 27px;
+}
+
+.nrnl-signup-page .signup-workout-card strong {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.nrnl-signup-page .signup-card-check {
+    font-size: 12px;
+    color: #d2aaa0;
+}
+
+.nrnl-signup-page .signup-workout-card.is-selected .signup-card-check {
+    color: #ffad80;
+    font-weight: 800;
+}
+
+.nrnl-signup-page.nrnl-auth-theme .signup-textarea {
+    height: auto;
+    min-height: 95px;
+    resize: vertical;
+}
+
+.nrnl-signup-page .main-btn:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+/* 상단 닉네임 링크 */
+.nrnl-profile-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nrnl-profile-link:hover strong {
+    color: #cc4025;
+}
+
+.nrnl-profile-link:focus-visible {
+    outline: 2px solid #cc4025;
+    outline-offset: 5px;
+    border-radius: 8px;
+}
+
+/* =========================================
+   나의 정보 페이지
+========================================= */
+
+/* 페이지 전체 너비 축소 */
+.nrnl-my-page {
+    width: 100%;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #33221f;
+}
+
+.nrnl-my-heading {
+    margin-bottom: 25px;
+}
+
+.nrnl-my-heading h1 {
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 8px;
+}
+
+.nrnl-my-heading p,
+.nrnl-my-subtitle {
+    color: #9b8078;
+    font-size: 13px;
+}
+
+/* 정보 카드 */
+.nrnl-my-card {
+    background: #fff;
+    border: 1px solid #f0dfd6;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 22px;
+}
+
+.nrnl-my-card h2 {
+    font-size: 21px;
+    font-weight: 900;
+    margin-bottom: 7px;
+}
+
+.nrnl-my-subtitle {
+    margin-bottom: 23px;
+}
+
+/* 입력 필드 */
+.nrnl-my-field {
+    margin-bottom: 17px;
+}
+
+.nrnl-my-field label,
+.nrnl-my-card-fieldset legend {
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #61413a;
+}
+
+.nrnl-my-field input,
+.nrnl-my-field select,
+.nrnl-my-field textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #e7d8d1;
+    border-radius: 10px;
+    padding: 12px 14px;
+    background: #fff;
+    color: #33221f;
+    font: inherit;
+    font-size: 14px;
+}
+
+.nrnl-my-field input:focus,
+.nrnl-my-field select:focus,
+.nrnl-my-field textarea:focus {
+    outline: 2px solid #e87b58;
+    outline-offset: 1px;
+}
+
+.nrnl-my-field input:disabled {
+    background: #f7f2ef;
+    color: #8d7770;
+}
+
+.nrnl-my-field textarea {
+    resize: vertical;
+}
+
+/* 계정 정보의 이메일, 닉네임만 짧게 */
+.nrnl-my-card:first-of-type .nrnl-my-field {
+    width: 100%;
+    max-width: 420px;
+}
+
+/* 성별, 나이, 키, 몸무게 */
+.nrnl-my-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 16px;
+}
+
+/* 숫자 입력 화살표 제거 */
+.nrnl-my-page input[type="number"]::-webkit-inner-spin-button,
+.nrnl-my-page input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.nrnl-my-page input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* =========================================
+   나의 정보 - 카드형 선택 UI
+========================================= */
+
+.nrnl-my-card-fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0 0 24px;
+    min-width: 0;
+}
+
+.nrnl-my-card-fieldset legend {
+    margin-bottom: 12px;
+}
+
+/* 선택 카드 공통 */
+.nrnl-my-select-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-width: 0;
+    padding: 16px 10px;
+    border: 1px solid #e6d4ca;
+    border-radius: 13px;
+    background: #fffaf7;
+    color: #44302b;
+    cursor: pointer;
+    text-align: center;
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease;
+}
+
+.nrnl-my-select-card:hover {
+    border-color: #df7954;
+    background: #fff2eb;
+    transform: translateY(-2px);
+}
+
+.nrnl-my-select-card.is-selected {
+    border-color: #db4127;
+    background: #fff0e8;
+    box-shadow: 0 0 0 1px rgba(219, 65, 39, .2);
+}
+
+.nrnl-my-select-card input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.nrnl-my-select-card:focus-within {
+    outline: 2px solid #db4127;
+    outline-offset: 3px;
+}
+
+.nrnl-my-select-card strong {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.nrnl-my-select-card small {
+    color: #977e75;
+    font-size: 11px;
+    line-height: 1.5;
+    word-break: keep-all;
+}
+
+/* 운동 경력 카드 */
+.nrnl-my-experience-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.nrnl-my-experience-cards .nrnl-my-select-card {
+    min-height: 125px;
+}
+
+.nrnl-my-radio-indicator {
+    width: 17px;
+    height: 17px;
+    border: 2px solid #bca69c;
+    border-radius: 50%;
+    position: relative;
+}
+
+.nrnl-my-select-card.is-selected .nrnl-my-radio-indicator {
+    border-color: #db4127;
+}
+
+.nrnl-my-select-card.is-selected .nrnl-my-radio-indicator::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    background: #db4127;
+    border-radius: 50%;
+}
+
+/* 운동 종목 카드 */
+.nrnl-my-workout-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.nrnl-my-workout-cards .nrnl-my-select-card {
+    min-height: 125px;
+}
+
+.nrnl-my-workout-icon {
+    font-size: 27px;
+}
+
+.nrnl-my-workout-cards .is-selected small {
+    color: #d83b24;
+    font-weight: 800;
+}
+
+/* 버튼 및 메시지 */
+.nrnl-my-button {
+    border: 0;
+    border-radius: 10px;
+    background: #d83b24;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 12px 20px;
+    cursor: pointer;
+}
+
+.nrnl-my-button:hover:not(:disabled) {
+    background: #b82f1b;
+}
+
+.nrnl-my-button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.nrnl-my-message {
+    margin: 12px 0;
+    color: #b83c27;
+    font-size: 13px;
+}
+
+/* =========================================
+   모바일 반응형
+========================================= */
+
+@media (max-width: 700px) {
+    #root > .nrnl-signup-page.nrnl-auth-theme > .page {
+        padding: 125px 12px 32px;
+    }
+
+    .nrnl-signup-page.nrnl-auth-theme
+    .form-card--single .form-left {
+        padding: 28px 22px;
+    }
+
+    .nrnl-signup-page .signup-account-fields {
+        max-width: 100%;
+    }
+
+    .nrnl-signup-page .signup-two-columns,
+    .nrnl-my-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nrnl-signup-page .signup-experience-cards,
+    .nrnl-my-experience-cards {
+        gap: 8px;
+    }
+
+    .nrnl-signup-page .signup-experience-card,
+    .nrnl-my-experience-cards .nrnl-my-select-card {
+        padding: 12px 7px;
+        min-height: 120px;
+    }
+
+    .nrnl-signup-page .signup-experience-card small,
+    .nrnl-my-experience-cards .nrnl-my-select-card small {
+        font-size: 10px;
+    }
+
+    .nrnl-my-page {
+        max-width: 100%;
+    }
+
+    .nrnl-my-card {
+        padding: 20px;
+    }
+
+    .nrnl-my-card:first-of-type .nrnl-my-field {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+    .nrnl-signup-page .signup-experience-cards,
+    .nrnl-my-experience-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .nrnl-signup-page .signup-experience-card,
+    .nrnl-my-experience-cards .nrnl-my-select-card {
+        min-height: 85px;
+    }
+}

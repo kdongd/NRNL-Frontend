@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useOutletContext } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import WorkoutCalendar from '../components/WorkoutCalendar'
 import WorkoutHeatmap from '../components/WorkoutHeatmap'
 import {
@@ -11,7 +11,9 @@ import {
     workoutLabel
 } from '../utils/workouts'
 import { fetchAssessment } from '../api/coachingApi'
-import { clearToken } from '../auth/token'
+import { clearToken, isLoggedIn } from '../auth/token'
+import { cachedNickname } from '../auth/nickname'
+import rengokuBanner from '../assets/rengoku-banner.jpg'
 
 const LEVEL = {
     STOP: ['운동 중단 권고', 'danger'],
@@ -22,12 +24,28 @@ const LEVEL = {
 }
 
 export default function DashboardPage() {
+    const navigate = useNavigate()
+    const signedIn = isLoggedIn()
+
+    const [nickname, setNickname] = useState(cachedNickname)
+
+    useEffect(() => {
+        const sync = () => setNickname(cachedNickname())
+
+        window.addEventListener('nrnl:nickname', sync)
+
+        return () => {
+            window.removeEventListener('nrnl:nickname', sync)
+        }
+    }, [])
+
     const now = new Date()
 
     const [view, setView] = useState({
         year: now.getFullYear(),
         month: now.getMonth()
     })
+
     const [selected, setSelected] = useState(todayKey())
     const [monthWorkouts, setMonthWorkouts] = useState([])
     const [yearWorkouts, setYearWorkouts] = useState([])
@@ -35,10 +53,8 @@ export default function DashboardPage() {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(true)
 
-    const navigate = useNavigate()
-    const { nickname } = useOutletContext()
-
     useEffect(() => {
+        if (!signedIn) return
         let active = true
         const { from, to } = monthBounds(view.year, view.month)
 
@@ -51,7 +67,7 @@ export default function DashboardPage() {
 
                 if (err.status === 401) {
                     clearToken()
-                    navigate('/login', { replace: true })
+                    navigate('/welcome', { replace: true })
                 } else {
                     setError(err.message)
                 }
@@ -60,10 +76,12 @@ export default function DashboardPage() {
         return () => {
             active = false
         }
-    }, [view, navigate])
+    }, [view, navigate, signedIn])
 
     useEffect(() => {
+        if (!signedIn) return
         let active = true
+
         const start = new Date()
         start.setDate(start.getDate() - 370)
 
@@ -83,7 +101,7 @@ export default function DashboardPage() {
                 setYearWorkouts(workouts.value)
             } else if (workouts.reason?.status === 401) {
                 clearToken()
-                navigate('/login', { replace: true })
+                navigate('/welcome', { replace: true })
             } else {
                 setError(
                     workouts.reason?.message ||
@@ -101,15 +119,19 @@ export default function DashboardPage() {
         return () => {
             active = false
         }
-    }, [navigate])
+    }, [navigate, signedIn])
 
     function moveMonth(amount) {
         setView(v => {
-            const d = new Date(v.year, v.month + amount, 1)
+            const date = new Date(
+                v.year,
+                v.month + amount,
+                1
+            )
 
             return {
-                year: d.getFullYear(),
-                month: d.getMonth()
+                year: date.getFullYear(),
+                month: date.getMonth()
             }
         })
     }
@@ -119,7 +141,9 @@ export default function DashboardPage() {
     )
 
     const thisMonth = yearWorkouts.filter(
-        w => dateKey(w.workoutDateTime).startsWith(todayKey().slice(0, 7))
+        w => dateKey(w.workoutDateTime).startsWith(
+            todayKey().slice(0, 7)
+        )
     )
 
     const monthlyMinutes = thisMonth.reduce(
@@ -129,27 +153,54 @@ export default function DashboardPage() {
 
     const monthlyDistance = thisMonth.reduce(
         (sum, w) =>
-            sum + (w.type === 'RUNNING' ? (Number(w.distanceKm) || 0) : 0),
+            sum + (
+                w.type === 'RUNNING'
+                    ? Number(w.distanceKm) || 0
+                    : 0
+            ),
         0
     )
 
-    const level = LEVEL[assessment?.level] || LEVEL.INSUFFICIENT_DATA
+    const level =
+        LEVEL[assessment?.level] ||
+        LEVEL.INSUFFICIENT_DATA
 
     return (
         <div className="dashboard-page">
-            <div className="page-heading">
+            <div
+                className="flame-welcome"
+                style={{
+                    backgroundImage: `
+                        linear-gradient(
+                            90deg,
+                            rgba(36,4,3,.97),
+                            rgba(70,13,6,.90) 48%,
+                            rgba(42,7,6,.06) 86%
+                        ),
+                        url("${rengokuBanner}")
+                    `
+                }}
+            >
                 <div>
-                    <span className="eyebrow">MY TRAINING SPACE</span>
+                    <span className="flame-welcome-kicker">
+                        MY TRAINING SPACE
+                    </span>
+
                     <h1>
-                        안녕하세요, {nickname || '회원'}님{' '}
-                        <span className="wave">👋</span>
+                        {signedIn ? `${nickname || '회원'}님, 오늘도` : '오늘도'}
+                        <br />
+                        마음을 불태워볼까요?
                     </h1>
+
                     <p>
-                        오늘도 나만의 페이스로, 기록을 이어가 볼까요?
+                        운동 기록을 쌓아 나만의 변화를 확인하세요.
                     </p>
                 </div>
 
-                <Link to="/workouts/new" className="btn btn-primary">
+                <Link
+                    to="/workouts/new"
+                    className="btn flame-welcome-action"
+                >
                     ＋ 운동 기록하기
                 </Link>
             </div>
@@ -162,28 +213,37 @@ export default function DashboardPage() {
 
             <div className="metric-grid">
                 <div className="metric-card">
-                    <span className="metric-icon blue-icon">◉</span>
+                    <span className="metric-icon blue-icon">
+                        ◉
+                    </span>
                     <span>이번 달 운동</span>
                     <strong>
-                        {thisMonth.length}<small>회</small>
+                        {signedIn ? thisMonth.length : '–'}
+                        <small>회</small>
                     </strong>
                     <em>꾸준한 기록이 쌓이고 있어요</em>
                 </div>
 
                 <div className="metric-card">
-                    <span className="metric-icon coral-icon">◷</span>
+                    <span className="metric-icon coral-icon">
+                        ◷
+                    </span>
                     <span>이번 달 운동 시간</span>
                     <strong>
-                        {monthlyMinutes.toLocaleString()}<small>분</small>
+                        {signedIn ? monthlyMinutes.toLocaleString() : '–'}
+                        <small>분</small>
                     </strong>
                     <em>움직인 시간만큼 성장 중</em>
                 </div>
 
                 <div className="metric-card">
-                    <span className="metric-icon mint-icon">↗</span>
+                    <span className="metric-icon mint-icon">
+                        ↗
+                    </span>
                     <span>이번 달 러닝 거리</span>
                     <strong>
-                        {monthlyDistance.toFixed(1)}<small>km</small>
+                        {signedIn ? monthlyDistance.toFixed(1) : '–'}
+                        <small>km</small>
                     </strong>
                     <em>러닝 기록 기준</em>
                 </div>
@@ -199,7 +259,10 @@ export default function DashboardPage() {
                             <h2>운동 캘린더</h2>
                         </div>
 
-                        <Link to="/calendar" className="text-link">
+                        <Link
+                            to="/calendar"
+                            className="text-link"
+                        >
                             전체 보기 →
                         </Link>
                     </div>
@@ -227,8 +290,8 @@ export default function DashboardPage() {
                             </Link>
                         </div>
 
-                        {selectedItems.length ? (
-                            selectedItems.map(w => (
+                        {selectedItems.length
+                            ? selectedItems.map(w => (
                                 <Link
                                     key={w.id}
                                     to={`/workouts/${w.id}`}
@@ -241,19 +304,29 @@ export default function DashboardPage() {
                                                 : 'box-symbol'
                                         }`}
                                     >
-                                        {w.type === 'RUNNING' ? '🏃' : '🥊'}
+                                        {w.type === 'RUNNING'
+                                            ? '🏃'
+                                            : '🥊'}
                                     </span>
 
-                                    <strong>{workoutLabel(w.type)}</strong>
-                                    <span>{w.durationMinutes}분</span>
-                                    <span className="push-right">→</span>
+                                    <strong>
+                                        {workoutLabel(w.type)}
+                                    </strong>
+
+                                    <span>
+                                        {w.durationMinutes}분
+                                    </span>
+
+                                    <span className="push-right">
+                                        →
+                                    </span>
                                 </Link>
                             ))
-                        ) : (
-                            <p className="muted">
-                                선택한 날짜의 운동 기록이 없어요.
-                            </p>
-                        )}
+                            : (
+                                <p className="muted">
+                                    {signedIn ? '선택한 날짜의 운동 기록이 없어요.' : '로그인하면 운동 기록을 볼 수 있어요.'}
+                                </p>
+                            )}
                     </div>
                 </section>
 
@@ -266,11 +339,16 @@ export default function DashboardPage() {
                                 </span>
                                 <h2>오늘의 운동 컨디션</h2>
                             </div>
-                            <span className="coaching-spark">✦</span>
+
+                            <span className="coaching-spark">
+                                ✦
+                            </span>
                         </div>
 
-                        <span className={`status-pill status-${level[1]}`}>
-                            {level[0]}
+                        <span
+                            className={`status-pill status-${level[1]}`}
+                        >
+                            {signedIn ? level[0] : '로그인 후 확인'}
                         </span>
 
                         <p>
@@ -295,7 +373,10 @@ export default function DashboardPage() {
                                 <h2>최근 운동</h2>
                             </div>
 
-                            <Link to="/workouts" className="text-link">
+                            <Link
+                                to="/workouts"
+                                className="text-link"
+                            >
                                 전체 보기 →
                             </Link>
                         </div>
@@ -313,12 +394,18 @@ export default function DashboardPage() {
                                             : 'box-symbol'
                                     }`}
                                 >
-                                    {w.type === 'RUNNING' ? '🏃' : '🥊'}
+                                    {w.type === 'RUNNING'
+                                        ? '🏃'
+                                        : '🥊'}
                                 </span>
 
                                 <span>
-                                    <strong>{workoutLabel(w.type)}</strong>
-                                    <small>{dateKey(w.workoutDateTime)}</small>
+                                    <strong>
+                                        {workoutLabel(w.type)}
+                                    </strong>
+                                    <small>
+                                        {dateKey(w.workoutDateTime)}
+                                    </small>
                                 </span>
 
                                 <b>{w.durationMinutes}분</b>
@@ -327,7 +414,7 @@ export default function DashboardPage() {
 
                         {!yearWorkouts.length && (
                             <p className="muted">
-                                {loading
+                                {!signedIn ? '로그인하면 운동 기록을 볼 수 있어요.' : loading
                                     ? '기록을 불러오는 중...'
                                     : '아직 운동 기록이 없어요.'}
                             </p>
@@ -345,7 +432,9 @@ export default function DashboardPage() {
                         <h2>나의 운동 잔디</h2>
                     </div>
 
-                    <span className="muted">최근 1년</span>
+                    <span className="muted">
+                        최근 1년
+                    </span>
                 </div>
 
                 <WorkoutHeatmap workouts={yearWorkouts} />

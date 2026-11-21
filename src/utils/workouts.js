@@ -1,8 +1,7 @@
 import { fetchWorkouts } from '../api/workoutApi'
 
 export const dateKey = value => String(value || '').slice(0, 10)
-export const todayKey = () => {
-  const d = new Date()
+export const todayKey = (d = new Date()) => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 export const monthKey = (year, month) => `${year}-${String(month + 1).padStart(2, '0')}`

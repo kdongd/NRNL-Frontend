@@ -1,0 +1,58 @@
+
+/* ==================================================
+   NO RUN NO LIFE - Dashboard Background
+
+   왼쪽 사이드바 : original-sidebar-exact.png
+   가운데 배너   : original-banner-exact.png
+
+   기존 크기, 구조, 메뉴, 버튼, 글씨 유지
+   배경 이미지만 변경
+   ================================================== */
+
+
+/* ==================================================
+   1. 왼쪽 사이드바 배경
+   ================================================== */
+
+.flame-app-shell .flame-sidebar {
+    background-image:
+        url('../assets/original-sidebar-exact.png') !important;
+
+    background-color: #180303 !important;
+
+    background-size: cover !important;
+
+    background-position: center center !important;
+
+    background-repeat: no-repeat !important;
+}
+
+
+/* ==================================================
+   2. 가운데 대시보드 배너 배경
+   ================================================== */
+
+.flame-app-shell .flame-welcome {
+    background-image:
+        url('../assets/original-banner-exact.png') !important;
+
+    background-color: #300505 !important;
+
+    background-size: cover !important;
+
+    background-position: center center !important;
+
+    background-repeat: no-repeat !important;
+}
+
+
+/* ==================================================
+   3. 모바일 화면
+   기존 반응형 크기와 구조 유지
+   ================================================== */
+
+@media (max-width: 700px) {
+    .flame-app-shell .flame-welcome {
+        background-position: center center !important;
+    }
+}
