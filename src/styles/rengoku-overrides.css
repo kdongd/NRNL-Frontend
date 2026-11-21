@@ -1,0 +1,697 @@
+
+/* 렌고쿠 대시보드 */
+
+.flame-app-shell {
+    background: #fff9f5;
+}
+
+/* 왼쪽 불꽃 사이드바 */
+.flame-sidebar {
+    background:
+        linear-gradient(
+            160deg,
+            rgba(22, 4, 3, .86),
+            rgba(32, 7, 5, .94)
+        ),
+        url('../assets/rengoku-landing-art.jpg')
+            center bottom / auto 100% no-repeat !important;
+
+    border-right: 1px solid #602316;
+    color: #fff;
+}
+
+.flame-sidebar .flame-sidebar-brand {
+    display: block;
+    color: #fff;
+    font-family: Georgia, serif;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.3;
+    white-space: nowrap;
+    text-decoration: none;
+    margin-bottom: 32px;
+}
+
+.flame-sidebar .side-nav {
+    margin-top: 10px;
+}
+
+.flame-sidebar .side-link {
+    color: #f5e5db;
+    border-radius: 10px;
+}
+
+.flame-sidebar .side-link:hover {
+    color: #fff;
+    background: #a72c1c70;
+}
+
+.flame-sidebar .side-link.is-active {
+    color: #fff;
+    background: linear-gradient(
+        90deg,
+        #d73820,
+        #8b2619
+    );
+}
+
+.flame-sidebar .side-icon {
+    color: #fff;
+}
+
+.flame-sidebar .sidebar-bottom {
+    color: #fff;
+}
+
+.flame-sidebar .flame-sidebar-quote {
+    color: #ffc26b;
+    line-height: 1.8;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+}
+
+.flame-sidebar .flame-sidebar-quote strong {
+    color: #fff;
+    font-size: 13px;
+}
+
+.flame-sidebar .logout-btn {
+    color: #f5d6c6;
+}
+
+.flame-sidebar .logout-btn:hover {
+    color: #fff;
+}
+
+/* 상단 프로필 */
+.flame-topbar {
+    background: #fffaf7;
+}
+
+.flame-profile-avatar {
+    overflow: hidden;
+    border-radius: 50%;
+    background: #ffead7;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flame-profile-avatar img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% 17%;
+}
+
+/* 대시보드 환영 배너 */
+.flame-welcome {
+    border-radius: 20px;
+    min-height: 215px;
+    padding: 32px 36px;
+    margin-bottom: 25px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    color: #fff;
+    background-size: cover;
+    background-position: 80% 23% !important;
+
+    box-shadow: 0 12px 35px #62211421;
+}
+
+.flame-welcome-kicker {
+    color: #ffbb8b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.flame-welcome h1 {
+    color: #fff;
+    font-size: clamp(22px, 2.5vw, 34px);
+    line-height: 1.35;
+    letter-spacing: -1px;
+    margin: 11px 0;
+    text-shadow: 0 2px 10px #2d0605;
+}
+
+.flame-welcome p {
+    color: #f8cfc4;
+    font-size: 12px;
+}
+
+.flame-welcome-action {
+    background: #fff;
+    color: #ac2a19;
+    align-self: flex-end;
+}
+
+@media (max-width: 700px) {
+    .flame-sidebar {
+        background: #240807 !important;
+    }
+
+    .flame-welcome {
+        padding: 25px 19px;
+        min-height: 230px;
+        align-items: flex-start;
+        flex-direction: column;
+        background-position: 70% center !important;
+    }
+
+    .flame-welcome-action {
+        align-self: flex-start;
+    }
+}
+
+/* 첫 화면: 기존 테마와 중복되는 요소 제거 */
+.flame-landing .flame-landing-auth::before,
+.flame-landing .flame-landing-auth::after,
+.flame-landing .flame-landing-nav::before,
+.flame-landing .flame-landing-nav::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* 첫 화면 헤더의 버튼은 한 줄에 하나씩만 */
+.flame-landing .flame-landing-auth {
+    position: relative;
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: nowrap;
+    z-index: 10;
+}
+
+.flame-landing .flame-landing-auth a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+/* 첫 화면 콘텐츠 */
+.flame-landing .flame-landing-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* 하단 버튼은 지금 시작하기 하나만 */
+.flame-landing .flame-landing-buttons a:not(.flame-start) {
+    display: none !important;
+}
+
+/* ==========================================
+   불꽃 배경 전용 수정
+   기존 컴포넌트, 기능, 레이아웃 유지
+   ========================================== */
+
+/* 1. 왼쪽 사이드바: 렌고쿠 얼굴 제거 */
+.flame-app-shell .flame-sidebar {
+    background-image:
+        linear-gradient(
+            180deg,
+            rgba(19, 2, 2, 0.50) 0%,
+            rgba(27, 3, 2, 0.30) 50%,
+            rgba(20, 2, 2, 0.65) 100%
+        ),
+        url('../assets/nrnl-fire-only.jpg') !important;
+
+    background-color: #200402 !important;
+    background-size: cover !important;
+    background-position: 50% center !important;
+    background-repeat: no-repeat !important;
+}
+
+/* 2. 가운데 환영 배너: 렌고쿠 얼굴 제거 */
+.flame-app-shell .flame-welcome {
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(24, 2, 2, 0.93) 0%,
+            rgba(38, 4, 2, 0.72) 28%,
+            rgba(55, 7, 2, 0.12) 76%
+        ),
+        url('../assets/nrnl-fire-only.jpg') !important;
+
+    background-color: #260402 !important;
+    background-size: cover !important;
+    background-position: center 65% !important;
+    background-repeat: no-repeat !important;
+}
+
+/* 기존 문구와 버튼이 불꽃 위에서도 잘 보이도록 */
+.flame-app-shell .flame-welcome h1,
+.flame-app-shell .flame-welcome p,
+.flame-app-shell .flame-welcome-kicker {
+    position: relative;
+    z-index: 1;
+}
+
+.flame-app-shell .flame-welcome-action {
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 700px) {
+    .flame-app-shell .flame-welcome {
+        background-position: 65% center !important;
+    }
+}
+
+
+/* =========================================
+   운동 잔디 - 화염 색상 디자인
+   기존 카드 배경과 레이아웃은 유지
+   ========================================= */
+
+.heatmap-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 기존 운동 일수 요약은 표시하지 않음 */
+.heatmap-summary {
+  display: none;
+}
+
+.flame-heatmap-scroll {
+  width: 100%;
+  overflow-x: auto;
+  padding-top: 58px;
+  padding-bottom: 12px;
+  scrollbar-width: thin;
+}
+
+.flame-heatmap-content {
+  --heatmap-cell-size: 12px;
+  --heatmap-gap: 4px;
+
+  width: max-content;
+  min-width: 100%;
+}
+
+.flame-heatmap-months {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--heatmap-weeks),
+    minmax(var(--heatmap-cell-size), 1fr)
+  );
+  gap: var(--heatmap-gap);
+  margin-left: 28px;
+  margin-bottom: 12px;
+  height: 18px;
+}
+
+.flame-heatmap-month {
+  color: #9a8a88;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.flame-heatmap-body {
+  display: flex;
+  gap: 10px;
+}
+
+.flame-heatmap-weekdays {
+  display: grid;
+  grid-template-rows: repeat(7, var(--heatmap-cell-size));
+  gap: var(--heatmap-gap);
+  width: 18px;
+  flex-shrink: 0;
+  color: #9a8a88;
+  font-size: 10px;
+  line-height: var(--heatmap-cell-size);
+}
+
+.flame-heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--heatmap-weeks),
+    minmax(var(--heatmap-cell-size), 1fr)
+  );
+  gap: var(--heatmap-gap);
+  flex: 1;
+}
+
+.flame-heatmap-week {
+  display: grid;
+  grid-template-rows: repeat(7, var(--heatmap-cell-size));
+  gap: var(--heatmap-gap);
+}
+
+.flame-heatmap-cell {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: var(--heatmap-cell-size, 12px);
+  height: var(--heatmap-cell-size, 12px);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* 운동 없음 - 아주 연한 화염색 */
+.flame-heatmap-cell.level-0 {
+  background: #f8eae5;
+}
+
+/* 운동 횟수에 따른 화염색 */
+.flame-heatmap-cell.level-1 {
+  background: #ffc29c;
+}
+
+.flame-heatmap-cell.level-2 {
+  background: #ff875a;
+}
+
+.flame-heatmap-cell.level-3 {
+  background: #ef4b30;
+}
+
+.flame-heatmap-cell.level-4 {
+  background: #aa1919;
+}
+
+.flame-heatmap-grid .flame-heatmap-cell:hover,
+.flame-heatmap-grid .flame-heatmap-cell:focus-visible {
+  transform: scale(1.18);
+  outline: 2px solid #d42e22;
+  outline-offset: 2px;
+  z-index: 10;
+}
+
+/* 마우스 오버 시 날짜 + 운동 횟수 */
+.flame-heatmap-tooltip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: max-content;
+  padding: 10px 13px;
+  border-radius: 8px;
+  background: #262124;
+  color: #fff;
+  box-shadow: 0 6px 18px #0003;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.flame-heatmap-tooltip strong {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.flame-heatmap-tooltip span {
+  color: #ffac82;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.flame-heatmap-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #262124;
+}
+
+/* 하단 운동 강도 범례 */
+.flame-heatmap-legend {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+  color: #9a8a88;
+  font-size: 11px;
+}
+
+.flame-heatmap-legend .flame-heatmap-cell {
+  width: 12px;
+  min-width: 12px;
+  height: 12px;
+  cursor: default;
+}
+
+.flame-heatmap-legend span {
+  margin: 0 5px;
+}
+
+
+/* 운동 잔디 1년 치를 가로 스크롤 없이 한 번에 표시 */
+
+.flame-heatmap-scroll {
+  overflow-x: visible;
+  width: 100%;
+  min-width: 0;
+}
+
+.flame-heatmap-content {
+  --heatmap-cell-size: 12px;
+  --heatmap-gap: 3px;
+
+  width: 100%;
+  min-width: 0;
+}
+
+.flame-heatmap-body {
+  width: 100%;
+  min-width: 0;
+}
+
+.flame-heatmap-grid {
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+  grid-template-columns: repeat(
+    var(--heatmap-weeks),
+    minmax(0, 1fr)
+  );
+}
+
+.flame-heatmap-week {
+  min-width: 0;
+  grid-template-rows: repeat(7, 12px);
+}
+
+.flame-heatmap-grid .flame-heatmap-cell {
+  min-width: 0;
+  width: 100%;
+  height: 12px;
+}
+
+.flame-heatmap-months {
+  grid-template-columns: repeat(
+    var(--heatmap-weeks),
+    minmax(0, 1fr)
+  );
+}
+
+
+/* ========================================
+   운동 잔디 - 1월부터 12월까지 전체 표시
+   ======================================== */
+
+.flame-heatmap-scroll {
+  width: 100%;
+  min-width: 0;
+  overflow-x: visible;
+  overflow-y: visible;
+  padding-top: 35px;
+  padding-bottom: 12px;
+}
+
+.flame-heatmap-content {
+  --heatmap-cell-size: 12px;
+  --heatmap-gap: 3px;
+
+  width: 100%;
+  min-width: 0;
+}
+
+.flame-heatmap-months {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--heatmap-weeks),
+    minmax(0, 1fr)
+  );
+  gap: var(--heatmap-gap);
+
+  margin-left: 28px;
+  margin-bottom: 12px;
+  height: 18px;
+}
+
+.flame-heatmap-month {
+  color: #9a8a88;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.flame-heatmap-body {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+.flame-heatmap-weekdays {
+  display: grid;
+  grid-template-rows: repeat(7, 12px);
+  gap: 3px;
+
+  width: 18px;
+  flex-shrink: 0;
+
+  color: #9a8a88;
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.flame-heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--heatmap-weeks),
+    minmax(0, 1fr)
+  );
+  gap: 3px;
+
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+}
+
+.flame-heatmap-week {
+  display: grid;
+  grid-template-rows: repeat(7, 12px);
+  gap: 3px;
+  min-width: 0;
+}
+
+.flame-heatmap-grid .flame-heatmap-cell {
+  width: 100%;
+  min-width: 0;
+  height: 12px;
+}
+
+/* 연도 밖 날짜의 빈칸 */
+.flame-heatmap-empty {
+  width: 100%;
+  height: 12px;
+  background: transparent;
+}
+
+/* 운동하지 않은 날 */
+.flame-heatmap-cell.level-0 {
+  background: #f8eae5;
+}
+
+/* 운동 횟수별 화염색 */
+.flame-heatmap-cell.level-1 {
+  background: #ffc29c;
+}
+
+.flame-heatmap-cell.level-2 {
+  background: #ff875a;
+}
+
+.flame-heatmap-cell.level-3 {
+  background: #ef4b30;
+}
+
+.flame-heatmap-cell.level-4 {
+  background: #aa1919;
+}
+
+/* 잔디 마우스 오버 */
+.flame-heatmap-grid .flame-heatmap-cell:hover,
+.flame-heatmap-grid .flame-heatmap-cell:focus-visible {
+  transform: scale(1.18);
+  outline: 2px solid #d42e22;
+  outline-offset: 2px;
+  z-index: 10;
+}
+
+/* 날짜 툴팁 */
+.flame-heatmap-tooltip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+
+  width: max-content;
+  padding: 10px 13px;
+  border-radius: 8px;
+
+  background: #262124;
+  color: #fff;
+  box-shadow: 0 6px 18px #0003;
+
+  pointer-events: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.flame-heatmap-tooltip strong {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.flame-heatmap-tooltip span {
+  color: #ffac82;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.flame-heatmap-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  border: 6px solid transparent;
+  border-top-color: #262124;
+}
+
+/* 하단 범례 */
+.flame-heatmap-legend {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+
+  color: #9a8a88;
+  font-size: 11px;
+}
+
+.flame-heatmap-legend .flame-heatmap-cell {
+  width: 12px;
+  min-width: 12px;
+  height: 12px;
+  cursor: default;
+}
+
+.flame-heatmap-legend span {
+  margin: 0 5px;
+}

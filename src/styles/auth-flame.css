@@ -1,0 +1,562 @@
+
+/* ==========================================
+   NO RUN NO LIFE
+   LOGIN / SIGNUP - SUNSET FLAME THEME
+========================================== */
+
+/* 페이지 전체 */
+#root > .form-page.nrnl-auth-theme {
+    position: relative;
+    isolation: isolate;
+
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    color: #fff8f3;
+    background-color: #190404;
+
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(18, 2, 3, 0.3),
+            rgba(18, 2, 3, 0.05)
+        ),
+        url('/images/auth-sunset.png'),
+        radial-gradient(
+            ellipse at 85% 42%,
+            #ffab25 0%,
+            #c7350e 30%,
+            #541008 65%,
+            #190404 100%
+        );
+
+    background-size: cover, cover, cover;
+    background-position: center, center, center;
+    background-repeat: no-repeat;
+}
+
+/* 페이지 레이아웃 */
+#root > .form-page.nrnl-auth-theme > .page {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+
+    margin: 0 auto;
+    padding: 28px 32px;
+
+    box-sizing: border-box;
+    background: transparent;
+}
+
+/* 상단 로고 */
+.nrnl-auth-theme .nrnl-auth-logo {
+    position: absolute;
+    top: 62px;
+    left: 32px;
+
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+
+    margin: 0;
+    padding: 0;
+
+    color: #fff8f1;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 0.96;
+    letter-spacing: -1.5px;
+
+    text-decoration: none;
+    text-shadow: 0 3px 14px rgba(0, 0, 0, 0.6);
+}
+
+.nrnl-auth-theme .nrnl-auth-logo span {
+    display: block;
+}
+
+.nrnl-auth-theme .nrnl-auth-logo em {
+    color: #ff4427;
+    font-style: normal;
+}
+
+/* 로그인 / 회원가입 카드 */
+.nrnl-auth-theme .form-card.form-card--single {
+    display: block;
+
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    min-height: 0;
+
+    margin: 0 auto;
+
+    background: rgba(24, 5, 5, 0.86);
+
+    border: 1px solid rgba(255, 111, 46, 0.9);
+    border-radius: 22px;
+
+    box-shadow:
+        0 0 0 1px rgba(255, 86, 26, 0.14),
+        0 0 28px rgba(255, 72, 21, 0.28),
+        0 22px 65px rgba(0, 0, 0, 0.46);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    overflow: hidden;
+}
+
+/* 카드 내부 */
+.nrnl-auth-theme .form-card--single .form-left {
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+
+    padding: 40px 48px 38px;
+
+    box-sizing: border-box;
+    border: none;
+    background: transparent;
+}
+
+/* 로그인 / 회원가입 제목 */
+.nrnl-auth-theme .form-left h1 {
+    margin: 0 0 12px;
+
+    color: #fffaf6;
+
+    font-size: 38px;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -1px;
+}
+
+/* 제목 아래 회색 설명 - 12px, 한 줄 */
+.nrnl-auth-theme .description {
+    margin: 0 0 20px;
+
+    color: #ead2c8;
+
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+
+    white-space: nowrap;
+}
+
+/* 설명 문구 안의 강제 줄바꿈 제거 */
+.nrnl-auth-theme .description br {
+    display: none;
+}
+
+/* 폼 */
+.nrnl-auth-theme form {
+    display: block;
+    width: 100%;
+}
+
+/* 필드 간격 */
+.nrnl-auth-theme .field-group {
+    margin: 0 0 18px;
+}
+
+/* 라벨 */
+.nrnl-auth-theme .form-label {
+    display: block;
+
+    margin: 0 0 8px;
+
+    color: #fff4ed;
+
+    font-size: 15px;
+    font-weight: 800;
+}
+
+/* 아이콘이 있는 입력창 */
+.nrnl-auth-theme .nrnl-input-wrap {
+    position: relative;
+    width: 100%;
+}
+
+/* 입력 아이콘 */
+.nrnl-auth-theme .nrnl-input-icon {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 22px;
+    height: 22px;
+
+    transform: translateY(-50%);
+
+    color: #f4d8c8;
+    font-size: 20px;
+
+    pointer-events: none;
+}
+
+/* 입력창 */
+.nrnl-auth-theme .form-control {
+    display: block;
+
+    width: 100%;
+    height: 52px;
+
+    padding: 10px 16px 10px 48px;
+
+    box-sizing: border-box;
+
+    background: rgba(24, 9, 8, 0.72);
+    color: #fff8f3;
+
+    border: 1px solid rgba(243, 186, 160, 0.52);
+    border-radius: 12px;
+
+    font: inherit;
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.nrnl-auth-theme .form-control::placeholder {
+    color: #ae9992;
+    opacity: 1;
+}
+
+/* 입력창 포커스 */
+.nrnl-auth-theme .form-control:focus {
+    background: rgba(36, 11, 9, 0.94);
+
+    border-color: #ff783e;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 90, 32, 0.15),
+        0 0 14px rgba(255, 82, 25, 0.13);
+}
+
+/* 브라우저 자동완성 */
+.nrnl-auth-theme .form-control:-webkit-autofill,
+.nrnl-auth-theme .form-control:-webkit-autofill:hover,
+.nrnl-auth-theme .form-control:-webkit-autofill:focus {
+    -webkit-text-fill-color: #fff8f3;
+
+    -webkit-box-shadow:
+        0 0 0 1000px #24100d inset;
+
+    transition:
+        background-color 9999s ease-in-out 0s;
+}
+
+/* 로그인 / 회원가입 버튼 */
+.nrnl-auth-theme .main-btn {
+    display: block;
+
+    width: 100%;
+    min-height: 54px;
+
+    margin: 20px 0 0;
+    padding: 12px 20px;
+
+    background: linear-gradient(
+        100deg,
+        #ff442c 0%,
+        #df241a 52%,
+        #ff442c 100%
+    );
+
+    color: #fff;
+
+    border: none;
+    border-radius: 13px;
+
+    font: inherit;
+    font-size: 17px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 22px rgba(215, 39, 19, 0.24);
+
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.nrnl-auth-theme .main-btn:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 9px 26px rgba(238, 49, 22, 0.32);
+}
+
+.nrnl-auth-theme .main-btn:active {
+    transform: translateY(0);
+}
+
+/* 오류 메시지 */
+.nrnl-auth-theme .field-error {
+    color: #ffb1a4;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* 또는 구분선 */
+.nrnl-auth-theme .auth-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    margin: 18px 0 16px;
+
+    color: #d9bcb0;
+    font-size: 13px;
+    text-align: center;
+}
+
+.nrnl-auth-theme .auth-divider::before,
+.nrnl-auth-theme .auth-divider::after {
+    content: "";
+
+    flex: 1;
+    height: 1px;
+
+    background: rgba(246, 193, 165, 0.4);
+}
+
+/* 구글 로그인 버튼 영역 */
+.nrnl-auth-theme .google-btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 44px;
+
+    margin: 0 0 14px;
+}
+
+/* 하단 로그인 / 회원가입 링크 */
+.nrnl-auth-theme .auth-switch {
+    margin: 18px 0 0;
+
+    color: #e1c9be;
+
+    font-size: 14px;
+    text-align: center;
+}
+
+.nrnl-auth-theme .auth-switch a {
+    color: #ff593c;
+
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.nrnl-auth-theme .auth-switch a:hover {
+    color: #ff9d72;
+    text-decoration: underline;
+}
+
+/* 높이가 낮은 노트북 대응 */
+@media (min-width: 769px) and (max-height: 800px) {
+    #root > .form-page.nrnl-auth-theme > .page {
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+
+    .nrnl-auth-theme .nrnl-auth-logo {
+        top: 42px;
+    }
+
+    .nrnl-auth-theme .form-card--single .form-left {
+        padding-top: 28px;
+        padding-bottom: 26px;
+    }
+
+    .nrnl-auth-theme .description {
+        margin-bottom: 16px;
+    }
+
+    .nrnl-auth-theme .field-group {
+        margin-bottom: 12px;
+    }
+
+    .nrnl-auth-theme .form-control {
+        height: 48px;
+    }
+
+    .nrnl-auth-theme .main-btn {
+        min-height: 50px;
+        margin-top: 16px;
+    }
+}
+
+/* 태블릿 및 모바일 */
+@media (max-width: 768px) {
+    #root > .form-page.nrnl-auth-theme > .page {
+        justify-content: flex-start;
+        padding: 28px 16px 40px;
+    }
+
+    .nrnl-auth-theme .nrnl-auth-logo {
+        position: static;
+        align-self: flex-start;
+
+        margin-bottom: 28px;
+        font-size: 29px;
+    }
+
+    .nrnl-auth-theme .form-card.form-card--single {
+        max-width: 100%;
+        border-radius: 20px;
+    }
+
+    .nrnl-auth-theme .form-card--single .form-left {
+        padding: 30px 26px;
+    }
+
+    .nrnl-auth-theme .form-left h1 {
+        font-size: 34px;
+    }
+
+    .nrnl-auth-theme .description {
+        margin-bottom: 18px;
+        font-size: 12px;
+        line-height: 1.4;
+        white-space: normal;
+    }
+}
+
+/* 아주 작은 화면 */
+@media (max-width: 380px) {
+    .nrnl-auth-theme .form-card--single .form-left {
+        padding: 26px 20px;
+    }
+
+    .nrnl-auth-theme .nrnl-auth-logo {
+        font-size: 26px;
+    }
+}
+
+
+/* ============================================
+   NRNL 공통 로고 - 웰컴 화면 불꽃 색상 통일
+
+   적용 화면
+   1. 로그인
+   2. 회원가입
+   3. 로그인 후 사이드바
+   ============================================ */
+
+/* 로그인 / 회원가입 로고의 NO 부분 */
+.nrnl-auth-theme .nrnl-auth-logo {
+    color: #fff8f1;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 900;
+    text-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.65);
+}
+
+/* RUN / LIFE 불꽃 그라데이션 */
+.nrnl-auth-theme .nrnl-auth-logo em {
+    display: inline-block;
+
+    background: linear-gradient(
+        100deg,
+        #e90000 0%,
+        #ff2100 25%,
+        #ff5200 48%,
+        #ff8c00 70%,
+        #ffd54a 90%,
+        #fff09a 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+
+    font-style: normal;
+
+    filter: drop-shadow(
+        0 0 5px rgba(255, 49, 0, 0.55)
+    );
+}
+
+/* 로그인 후 사이드바 로고 */
+.flame-sidebar .flame-sidebar-brand {
+    display: block;
+
+    color: #fff8f1;
+
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.3;
+
+    white-space: nowrap;
+    text-decoration: none;
+
+    text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.65);
+}
+
+/* 사이드바 로고의 RUN LIFE 부분 */
+.flame-sidebar .flame-sidebar-brand .nrnl-logo-fire {
+    background: linear-gradient(
+        100deg,
+        #e90000 0%,
+        #ff2100 25%,
+        #ff5200 48%,
+        #ff8c00 70%,
+        #ffd54a 90%,
+        #fff09a 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+
+    filter: drop-shadow(
+        0 0 4px rgba(255, 49, 0, 0.45)
+    );
+}

@@ -1,0 +1,598 @@
+
+.nrnl-workout-page {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 28px 40px;
+  color: #35221e;
+  box-sizing: border-box;
+}
+
+.nrnl-workout-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.nrnl-workout-eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: #b77b68;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.nrnl-workout-heading h1 {
+  margin: 0 0 7px;
+  font-size: 32px;
+  font-weight: 900;
+  color: #35221e;
+}
+
+.nrnl-workout-heading p {
+  margin: 0;
+  color: #9a7f75;
+  font-size: 13px;
+}
+
+.nrnl-workout-back {
+  flex-shrink: 0;
+  padding: 11px 15px;
+  border: 1px solid #ead7ce;
+  border-radius: 10px;
+  background: #fff;
+  color: #7b4b3d;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* 왼쪽 운동 정보 / 오른쪽 컨디션 */
+.nrnl-workout-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr);
+  align-items: start;
+  gap: 20px;
+}
+
+.nrnl-workout-main,
+.nrnl-workout-side {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.nrnl-workout-panel {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid #eddcd3;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow: 0 5px 22px rgba(75, 26, 14, 0.035);
+}
+
+.nrnl-workout-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.nrnl-workout-section-heading h2 {
+  margin: 0;
+  color: #3b2722;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.nrnl-workout-section-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: #fff0e9;
+  color: #cf492d;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+/* 운동 종류 */
+.nrnl-workout-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.nrnl-workout-type-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  min-height: 75px;
+  padding: 12px;
+  border: 1px solid #ead8cf;
+  border-radius: 13px;
+  background: #fffaf7;
+  color: #4d3229;
+  cursor: pointer;
+}
+
+.nrnl-workout-type-card.is-active {
+  border-color: #dc4329;
+  background: #fff0e8;
+  box-shadow: inset 0 0 0 1px #dc4329;
+}
+
+.nrnl-workout-type-card input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.nrnl-workout-type-icon {
+  font-size: 25px;
+}
+
+.nrnl-workout-type-card strong {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.nrnl-workout-type-card small {
+  color: #ac8e83;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* 운동 정보 입력 */
+.nrnl-workout-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px 12px;
+}
+
+.nrnl-workout-field {
+  min-width: 0;
+}
+
+.nrnl-workout-field label {
+  display: block;
+  margin-bottom: 8px;
+  color: #62453b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.nrnl-workout-field input,
+.nrnl-workout-field select,
+.nrnl-workout-field textarea,
+.nrnl-workout-detail-row input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 12px 13px;
+  border: 1px solid #e8d8d0;
+  border-radius: 10px;
+  background: #fffdfb;
+  color: #37251f;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.nrnl-workout-field input,
+.nrnl-workout-field select {
+  height: 44px;
+}
+
+.nrnl-workout-field textarea {
+  resize: vertical;
+  min-height: 110px;
+  line-height: 1.6;
+}
+
+.nrnl-workout-field input:focus,
+.nrnl-workout-field select:focus,
+.nrnl-workout-field textarea:focus,
+.nrnl-workout-detail-row input:focus {
+  border-color: #d95332;
+  box-shadow: 0 0 0 3px rgba(217, 83, 50, 0.1);
+}
+
+/* RPE / 몸 상태 */
+.nrnl-workout-rpe-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.nrnl-workout-rpe-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  min-height: 80px;
+  padding: 8px 2px;
+  border: 1px solid #e9d9d1;
+  border-radius: 11px;
+  background: #fffaf7;
+  cursor: pointer;
+}
+
+.nrnl-workout-rpe-card.is-active {
+  border-color: #dc4329;
+  background: #fff0e8;
+  box-shadow: inset 0 0 0 1px #dc4329;
+}
+
+.nrnl-workout-rpe-card strong {
+  color: #5b3930;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.nrnl-workout-rpe-card.is-active strong {
+  color: #d43c23;
+}
+
+.nrnl-workout-rpe-card small {
+  color: #947c73;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  word-break: keep-all;
+}
+
+.nrnl-workout-rpe-description {
+  margin: 13px 0 0;
+  color: #d3472c;
+  font-size: 12px;
+  font-weight: 900;
+  text-align: right;
+}
+
+/* 통증 없음 / 있음 */
+.nrnl-workout-pain-choice {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.nrnl-workout-pain-choice button {
+  min-height: 46px;
+  border: 1px solid #e9d9d1;
+  border-radius: 10px;
+  background: #fffaf7;
+  color: #69483e;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.nrnl-workout-pain-choice button.is-active {
+  border-color: #dc4329;
+  background: #fff0e8;
+  color: #c23e28;
+  box-shadow: inset 0 0 0 1px #dc4329;
+}
+
+.nrnl-workout-pain-guide {
+  margin-top: 16px;
+}
+
+/* 통증 부위 */
+.nrnl-workout-pain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.nrnl-workout-pain-part {
+  min-height: 39px;
+  padding: 9px 4px;
+  border: 1px solid #e9d9d1;
+  border-radius: 9px;
+  background: #fffaf7;
+  color: #69483e;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  word-break: keep-all;
+}
+
+.nrnl-workout-pain-part.is-active {
+  border-color: #dc4329;
+  background: #fff0e8;
+  color: #c23e28;
+  font-weight: 900;
+}
+
+/* 부위별 통증 강도 */
+.nrnl-workout-pain-level {
+  margin-top: 16px;
+  padding: 13px;
+  border: 1px solid #f0ddd3;
+  border-radius: 11px;
+  background: #fffaf7;
+}
+
+.nrnl-workout-pain-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 11px;
+}
+
+.nrnl-workout-pain-title strong {
+  font-size: 13px;
+  color: #4b3129;
+}
+
+.nrnl-workout-pain-title span {
+  font-size: 11px;
+  font-weight: 800;
+  color: #c94b30;
+}
+
+.nrnl-workout-pain-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.nrnl-workout-pain-buttons button {
+  height: 35px;
+  border: 1px solid #ead9d0;
+  border-radius: 8px;
+  background: #fff;
+  color: #6b4b41;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.nrnl-workout-pain-buttons button.is-active {
+  border-color: #dc4329;
+  background: #dc4329;
+  color: #fff;
+}
+
+/* 세부 기록 */
+.nrnl-workout-add-detail {
+  margin-left: auto;
+  padding: 8px 12px;
+  border: 1px solid #dfac97;
+  border-radius: 8px;
+  background: #fff4ee;
+  color: #c6472d;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.nrnl-workout-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.nrnl-workout-detail-row {
+  display: grid;
+  grid-template-columns: 1fr 100px 1.2fr 36px;
+  gap: 8px;
+  align-items: center;
+}
+
+.nrnl-workout-detail-row button {
+  height: 40px;
+  border: 1px solid #efd9d1;
+  border-radius: 9px;
+  background: #fff6f2;
+  color: #b9402b;
+  cursor: pointer;
+}
+
+/* 운동 메모 / 컨디션 메모 */
+.nrnl-workout-hint {
+  margin: 6px 0 0;
+  color: #9e867c;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.nrnl-workout-memo-field {
+  margin-top: 14px;
+}
+
+.nrnl-workout-memo-field textarea {
+  width: 100%;
+}
+
+.nrnl-workout-char-count {
+  margin: 5px 0 0;
+  color: #a58b81;
+  font-size: 11px;
+  text-align: right;
+}
+
+/* 운동 메모 바로 아래 저장 영역 */
+.nrnl-workout-footer {
+  display: block;
+  padding: 18px;
+  border: 1px solid #eddcd3;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow: 0 5px 22px rgba(75, 26, 14, 0.035);
+}
+
+/* 취소 1 : 저장 2 비율 */
+.nrnl-workout-footer-actions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.nrnl-workout-save-button {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(110deg, #dc3e24, #ad241b);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.nrnl-workout-save-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.nrnl-workout-cancel-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px;
+  box-sizing: border-box;
+  border: 1px solid #ead8d0;
+  border-radius: 10px;
+  background: #fffaf7;
+  color: #80675e;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+}
+
+.nrnl-workout-alert {
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid #f1b7a9;
+  border-radius: 9px;
+  background: #fff0eb;
+  color: #b53620;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.nrnl-workout-page button:hover:not(:disabled) {
+  filter: brightness(0.97);
+}
+
+.nrnl-workout-page button:focus-visible,
+.nrnl-workout-page a:focus-visible {
+  outline: 2px solid #dc4329;
+  outline-offset: 3px;
+}
+
+/* 기존 컨디션 업데이트 페이지 스타일 유지 */
+.nrnl-condition-score-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.nrnl-condition-score-grid button {
+  min-height: 46px;
+  border: 1px solid #e9d9d1;
+  border-radius: 10px;
+  background: #fffaf7;
+  color: #69483e;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.nrnl-condition-score-grid button.is-active {
+  border-color: #dc4329;
+  background: #fff0e8;
+  color: #c23e28;
+}
+
+.nrnl-condition-update-hint {
+  margin: 18px 0 14px;
+  padding: 13px 15px;
+  border: 1px solid #f0ddd3;
+  border-radius: 10px;
+  background: #fff8f4;
+  color: #876557;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* 반응형 */
+@media (max-width: 1100px) {
+  .nrnl-workout-page {
+    padding: 20px 12px 35px;
+  }
+
+  .nrnl-workout-layout {
+    grid-template-columns: minmax(0, 1.3fr) minmax(280px, 1fr);
+    gap: 12px;
+  }
+
+  .nrnl-workout-panel {
+    padding: 16px;
+  }
+
+  .nrnl-workout-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .nrnl-workout-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .nrnl-workout-page {
+    padding: 16px 8px 35px;
+  }
+
+  .nrnl-workout-heading h1 {
+    font-size: 27px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nrnl-workout-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nrnl-workout-type-card small {
+    display: none;
+  }
+
+  .nrnl-workout-detail-row {
+    grid-template-columns: 1fr 80px 32px;
+  }
+
+  .nrnl-workout-detail-row input:nth-child(3) {
+    grid-column: 1 / 3;
+    grid-row: 2;
+  }
+
+  .nrnl-workout-footer-actions {
+    grid-template-columns: 1fr 1.5fr;
+  }
+}

@@ -1,11 +1,15 @@
 
 import { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { login, loginWithGoogle } from '../api/authApi'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { login, loginWithGoogle, getMyNickname } from '../api/authApi'
 import { setToken } from '../auth/token'
 
 export default function LoginPage() {
     const navigate = useNavigate()
+    const { state } = useLocation()
+    const requestedPage = state?.from
+    const returnTo = typeof requestedPage === 'string' && /^\/(?![/\\])/.test(requestedPage)
+        ? requestedPage : '/home'
     const googleButtonRef = useRef(null)
 
     const [email, setEmail] = useState('')
@@ -39,25 +43,27 @@ export default function LoginPage() {
         document.body.appendChild(script)
 
         return () => {
-            document.body.removeChild(script)
+            if (script.parentNode) {
+                script.parentNode.removeChild(script)
+            }
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // 로그인 성공 후 메인 화면으로 이동
-    // 백엔드 JWT에는 nickname 정보가 없으므로
-    // JWT로 닉네임 존재 여부를 판단하지 않는다.
-    function handleLoginSuccess(data) {
-        if (!data?.accessToken) {
-            setError('로그인 응답에 토큰이 없습니다.')
-            return
-        }
+    async function goHomeOrNicknameSetup(accessToken) {
+        const { nickname } = await getMyNickname(accessToken)
 
-        setToken(data.accessToken)
-        navigate('/', { replace: true })
+        setToken(accessToken)
+
+        navigate(
+            typeof nickname === 'string' && nickname.trim()
+                ? returnTo
+                : '/nickname',
+            { replace: true, state: { from: returnTo } }
+        )
     }
 
-    // 구글 로그인
     function handleGoogleCredential(response) {
         setError('')
 
@@ -66,16 +72,22 @@ export default function LoginPage() {
                 if (!res.ok) {
                     throw new Error('구글 로그인 실패')
                 }
+
                 return res.json()
             })
-            .then(handleLoginSuccess)
+            .then(data => {
+                if (!data.accessToken) {
+                    throw new Error('로그인 토큰이 없습니다.')
+                }
+
+                return goHomeOrNicknameSetup(data.accessToken)
+            })
             .catch(err => {
                 console.error('구글 로그인 실패:', err)
-                setError('구글 로그인에 실패했습니다.')
+                setError('구글 로그인 또는 닉네임 조회에 실패했습니다.')
             })
     }
 
-    // 이메일 / 비밀번호 로그인
     function handleSubmit(e) {
         e.preventDefault()
         setError('')
@@ -96,18 +108,30 @@ export default function LoginPage() {
             })
             .then(data => {
                 if (!data) return
-                handleLoginSuccess(data)
+
+                if (!data.accessToken) {
+                    throw new Error('로그인 토큰이 없습니다.')
+                }
+
+                return goHomeOrNicknameSetup(data.accessToken)
             })
             .catch(err => {
                 console.error('로그인 실패:', err)
-                setError('로그인에 실패했습니다.')
+                setError('로그인 또는 닉네임 조회에 실패했습니다.')
             })
     }
 
     return (
-        <div className="form-page">
+        <div className="form-page nrnl-auth-theme">
             <div className="page">
-                <div className="logo">NO RUN NO LIFE</div>
+                <Link to="/welcome" className="nrnl-auth-logo">
+                    <span>
+                        NO <em>RUN</em>
+                    </span>
+                    <span>
+                        NO <em>LIFE</em>
+                    </span>
+                </Link>
 
                 <div className="form-card form-card--single">
                     <div className="form-left">
@@ -120,39 +144,68 @@ export default function LoginPage() {
                         </p>
 
                         <form onSubmit={handleSubmit}>
-                            <div className="mb-4 field-group">
-                                <label className="form-label">
+                            <div className="field-group">
+                                <label
+                                    className="form-label"
+                                    htmlFor="login-email"
+                                >
                                     이메일
                                 </label>
 
-                                <input
-                                    type="email"
-                                    className="form-control"
-                                    placeholder="you@example.com"
-                                    value={email}
-                                    onChange={e => setEmail(e.target.value)}
-                                    required
-                                />
+                                <div className="nrnl-input-wrap">
+                                    <span
+                                        className="nrnl-input-icon"
+                                        aria-hidden="true"
+                                    >
+                                        ✉
+                                    </span>
+
+                                    <input
+                                        id="login-email"
+                                        type="email"
+                                        className="form-control"
+                                        placeholder="you@example.com"
+                                        value={email}
+                                        onChange={e => setEmail(e.target.value)}
+                                        autoComplete="email"
+                                        required
+                                    />
+                                </div>
                             </div>
 
-                            <div className="mb-4 field-group">
-                                <label className="form-label">
+                            <div className="field-group">
+                                <label
+                                    className="form-label"
+                                    htmlFor="login-password"
+                                >
                                     비밀번호
                                 </label>
 
-                                <input
-                                    type="password"
-                                    className="form-control"
-                                    placeholder="비밀번호"
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
-                                    required
-                                />
+                                <div className="nrnl-input-wrap">
+                                    <span
+                                        className="nrnl-input-icon"
+                                        aria-hidden="true"
+                                    >
+                                        ♙
+                                    </span>
+
+                                    <input
+                                        id="login-password"
+                                        type="password"
+                                        className="form-control"
+                                        placeholder="비밀번호"
+                                        value={password}
+                                        onChange={e => setPassword(e.target.value)}
+                                        autoComplete="current-password"
+                                        required
+                                    />
+                                </div>
                             </div>
 
                             {error && (
                                 <div
                                     className="field-error"
+                                    role="alert"
                                     style={{ marginBottom: 20 }}
                                 >
                                     {error}
@@ -162,7 +215,6 @@ export default function LoginPage() {
                             <button
                                 type="submit"
                                 className="main-btn"
-                                style={{ width: '100%' }}
                             >
                                 로그인
                             </button>

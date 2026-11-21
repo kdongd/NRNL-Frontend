@@ -58,3 +58,8 @@ export function getNickname() {
         return null
     }
 }
+export function getCurrentUserId() {
+    if (!isLoggedIn()) return null
+    const id = Number(decodeTokenPayload(getToken()).sub)
+    return Number.isSafeInteger(id) && id > 0 ? id : null
+}

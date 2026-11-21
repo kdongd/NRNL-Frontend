@@ -1,0 +1,200 @@
+
+/* ==========================================
+   NBNL 상단 헤더
+   중앙 이미지 + 오른쪽 프로필
+   ========================================== */
+
+.flame-app-shell .nrnl-custom-topbar {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    width: 100%;
+    height: 76px;
+
+    padding: 0 36px;
+
+    background: #fffaf7;
+    border-bottom: 1px solid #f0e3dd;
+}
+
+/* ==========================================
+   중앙 일본어 붓글씨 배너
+   ========================================== */
+
+.flame-app-shell .nrnl-header-slogan {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: min(85%, 1100px);
+    height: 100%;
+
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.flame-app-shell .nrnl-header-slogan-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+
+    /* 투명 PNG에 맞춰 크기 축소 */
+    transform: scale(0.85);
+
+    mix-blend-mode: normal;
+
+    border: none;
+}
+
+/* ==========================================
+   오른쪽 프로필
+   ========================================== */
+
+.flame-app-shell .nrnl-topbar-profile {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-left: auto;
+    flex-shrink: 0;
+
+    width: auto;
+
+    text-decoration: none;
+    white-space: nowrap;
+
+    z-index: 3;
+}
+
+.flame-app-shell .nrnl-topbar-profile strong {
+    font-size: 12px;
+    font-weight: 800;
+
+    color: #302626;
+    white-space: nowrap;
+}
+
+.flame-app-shell .nrnl-topbar-profile .profile-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.flame-app-shell .nrnl-topbar-profile .profile-avatar img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* ==========================================
+   태블릿 화면
+   ========================================== */
+
+@media (max-width: 1100px) {
+
+    .flame-app-shell .nrnl-custom-topbar {
+        padding: 0 22px;
+    }
+
+    .flame-app-shell .nrnl-header-slogan {
+        width: 65%;
+    }
+
+    .flame-app-shell .nrnl-header-slogan-image {
+        transform: scale(0.85);
+    }
+
+    .flame-app-shell .nrnl-topbar-profile {
+        gap: 7px;
+    }
+
+}
+
+/* ==========================================
+   모바일 화면
+   ========================================== */
+
+@media (max-width: 700px) {
+
+    .flame-app-shell .nrnl-custom-topbar {
+        height: 60px;
+        padding: 0 17px;
+
+        justify-content: space-between;
+    }
+
+    .flame-app-shell .nrnl-header-slogan {
+        width: 42%;
+        max-width: 260px;
+    }
+
+    .flame-app-shell .nrnl-header-slogan-image {
+        transform: scale(0.85);
+    }
+
+    .flame-app-shell .nrnl-topbar-profile {
+        margin-left: auto;
+        gap: 6px;
+    }
+
+    .flame-app-shell .nrnl-topbar-profile strong {
+        font-size: 11px;
+    }
+
+    .flame-app-shell .nrnl-topbar-profile .profile-avatar {
+        width: 28px;
+        height: 28px;
+    }
+
+}
+
+/* ==========================================
+   작은 모바일 화면
+   ========================================== */
+
+@media (max-width: 480px) {
+
+    .flame-app-shell .nrnl-header-slogan {
+        width: 38%;
+    }
+
+    .flame-app-shell .nrnl-header-slogan-image {
+        transform: scale(0.85);
+    }
+
+    .flame-app-shell .nrnl-topbar-profile strong {
+        font-size: 10px;
+    }
+
+}
